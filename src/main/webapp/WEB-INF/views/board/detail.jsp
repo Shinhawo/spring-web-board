@@ -52,6 +52,7 @@
 							</tr>
 							<tr>
 								<th class="table-secondary">내용</th>
+								<sec:authentication property="principal" var="nUser"/>
 								<td colspan="3">
 									${board.content }
 								</td>
@@ -68,8 +69,8 @@
 				</tbody>
 			</table>
 			<div>
-				<sec:authentication property="principal" var="now"/>
-				<c:if test="${user.no eq now.no} }">
+				<sec:authentication property="principal" var="user"/>
+				<c:if test="${board.user.no eq user.no} }">
 					<a href="modify?no=${board.no }" class="btn btn-warning btn-sm" >수정</a>
 					<a href="delete?no=${board.no }" class="btn btn-danger btn-sm">삭제</a>
 				</c:if>
