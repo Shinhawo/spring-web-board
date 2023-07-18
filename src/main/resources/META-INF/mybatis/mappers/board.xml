@@ -1,3 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="META-INF.mybatis.mappers.board"></mapper>
+<mapper namespace="kr.co.jhta.dao.BoardDao">
+
+	<select id="getBoards" parameterType="map" resultType="kr.co.jhta.vo.Board">
+		select *
+		from(
+			select
+				A.board_no			as no,
+				A.board_title			as title,
+				A.board_read_count	as readCount,
+				A.board_review_count	as reviewCount,
+				A.board_create_date	as createDate,
+				A.board_update_date	as updateDate,
+				A.user_no				as "user.no",
+				B.user_email			as "user.email",
+				row_number() over (order by A.board_create_Date asc) rownumber
+			from spring_boot_boards	A, spring_boot_users B
+			where A.user_no = B.user_no
+		)
+		where
+			rownumber between #{begin} and #{end}
+	</select>
+	
+	<select id="getTotalRows" resultType="int">
+		select count(*)
+		from SPRING_BOOT_BOARDS
+	</select>
+	
+	<insert id="insertBoard" parameterType="kr.co.jhta.vo.Board">
+		insert into SPRING_BOOT_BOARDS
+		(board_no, board_title, board_content, user_no)
+		values
+		(boot_boards_seq.nextVal, #{title}, #{content}, #{user.no})
+	</insert>
+	
+	<select id="getBoardByNo" parameterType="int" resultType="kr.co.jhta.vo.Board">
+		select
+			A.board_no				as no,
+			A.board_title			as title,
+			A.board_read_count		as readCount,
+			A.board_review_count	as reviewCount,
+			A.board_create_date		as createDate,
+			A.board_update_date		as updateDate,
+			A.user_no				as "user.no",
+			B.user_email			as "user.email",
+			A.board_content			as content
+		from spring_boot_boards	A, spring_boot_users B
+		where board_no = #{value}
+		and A.user_no = B.user_no
+	</select>
+	
+	<update id="updateBoard" parameterType="int">
+		update 
+			spring_boot_boards
+		<set>
+			<if test="title != null">
+					
+				board_title = #{title},
+			</if>
+			<if test="content != null">
+				board_content = #{content},
+			</if>
+			<if test="readCount != null">					
+				board_read_count = #{readCount},
+			</if>
+			<if test="reviewCount != null">					
+				board_review_count = #{reviewCount},
+			</if>
+			board_update_date = sysdate
+		</set> 
+		where 
+			board_no = #{no}
+	</update>
+</mapper>
+

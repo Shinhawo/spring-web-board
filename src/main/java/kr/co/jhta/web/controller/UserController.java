@@ -1,5 +1,7 @@
 package kr.co.jhta.web.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,8 +44,18 @@ public class UserController {
 	}
 	
 	// 내정보보기 화면 요청과 매핑되는 요청핸들러 메서드
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/info")
+	public String userInfo(Authentication authentication, Model model) {
+		
+		User user = (User) authentication.getPrincipal();
+		model.addAttribute("user", user);
+		
+		return "user/info";
+	}
 	
 	// 내정보수정화면 요청과 매핑되는 요청핸들러 메서드
+
 	
 	// 내정보 수정 요청과 매핑되는 요청핸들러 메서드
 	

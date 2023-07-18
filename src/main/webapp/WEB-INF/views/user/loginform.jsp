@@ -23,6 +23,25 @@
 	</div>
 	<div class="row mb-3">
 		<div class="col-12">
+		
+		<c:choose>
+			<c:when test="${param.error eq 'fail' }">
+				<div class="alert alert-danger">
+	  				<strong>로그인 실패</strong> 아이디 혹은 비밀번호가 올바르지 않습니다.
+  				</div>
+			</c:when>
+			<c:when test="${param.error eq 'denied' }">
+				<div class="alert alert-danger">
+	  				<strong>접근 거부</strong> 로그인 후 사용가능한 서비스를 요청하였습니다.
+  				</div>
+			</c:when>
+			<c:when test="${param.error eq 'forbidden' }">
+				<div class="alert alert-danger">
+	  				<strong>권한 부족</strong> 요청한 서비스에 필요한 권한이 없습니다.
+  				</div>
+			</c:when>
+		</c:choose>
+		
 			<p>아이디와 비밀번호를 입력하고 로그인하세요</p>
 			<form class="border bg-light p-3" method="post" action="login" >
 				<div class="form-group mb-3">

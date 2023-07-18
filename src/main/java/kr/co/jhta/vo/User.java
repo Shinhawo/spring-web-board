@@ -26,6 +26,10 @@ public class User implements UserDetails {
 	private Date createDate;
 	private List<String> roleNames;
 	
+	public User(int no) {
+		this.no = no;
+	}
+	
 	@Builder
 	public User(int no, String email, String encryptedPassword, Date updateDate, 
 			Date createDate, List<String> roleNames) {

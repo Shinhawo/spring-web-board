@@ -23,7 +23,7 @@ public class WebSecurityConfig {
 					.passwordParameter("password")
 					.loginProcessingUrl("/user/login")
 					.defaultSuccessUrl("/")
-					.failureUrl("/user/loginform?error=fail")
+					.failureUrl("/user/login?error=fail")
 				.and()
 					.logout()
 						.logoutUrl("/user/logout")
@@ -31,10 +31,10 @@ public class WebSecurityConfig {
 						.invalidateHttpSession(true)
 				.and()
 					.exceptionHandling()
-					.authenticationEntryPoint((req, res, ex) -> res.sendRedirect("/emp/loginform?error=denied"))
+					.authenticationEntryPoint((req, res, ex) -> res.sendRedirect("/user/login?error=denied"))
 				.and()
 					.exceptionHandling()
-					.accessDeniedHandler((req, res, ex) -> res.sendRedirect("/emp/loginform?error=forbidden"))
+					.accessDeniedHandler((req, res, ex) -> res.sendRedirect("/user/login?error=forbidden"))
 				.and()
 					.build();
 	}

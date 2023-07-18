@@ -16,12 +16,12 @@
 					<a class="nav-link ${menu eq '홈' ? 'active' : '' }" href="/">홈</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link ${menu eq '게시판' ? 'active' : '' }" href="/post/list">게시판</a>
+					<a class="nav-link ${menu eq '게시판' ? 'active' : '' }" href="/board/list">게시판</a>
 				</li>
 			</ul>
 			<sec:authorize access="isAuthenticated()">
 				<sec:authentication property="principal" var="user"/>
-				<span class="navbar-text me-5" ><strong class="text-white" >${user.email}님</strong>님 방가방가 ‪‧˚₊*̥(* ⁰̷̴͈꒳⁰̷̴͈ )‧˚₊*̥</span>				
+				<span class="navbar-text me-5" ><strong class="text-white" >${user.email}</strong>님 방가방가 ‪‧˚₊*̥(* ⁰̷̴͈꒳⁰̷̴͈ )‧˚₊*̥</span>				
 			</sec:authorize>
 			
 			<ul class="navbar-nav">

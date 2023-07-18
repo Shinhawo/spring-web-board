@@ -36,41 +36,25 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr >
-						<td colspan="6" class="text-center">게시글이 존재하지 않습니다.</td>
-					</tr>
-					<tr>
-						<td>10</td>
-						<td><a href="list?no-10" >연습</a></td>
-						<td>10</td>
-						<td>1</td>
-						<td>hong@gmail.com</td>
-						<td>2023-01-01</td>
-					</tr>
-					<tr>
-						<td>10</td>
-						<td><a href="list?no-10" >연습</a></td>
-						<td>10</td>
-						<td>1</td>
-						<td>hong@gmail.com</td>
-						<td>2023-01-01</td>
-					</tr>
-					<tr>
-						<td>10</td>
-						<td><a href="list?no-10" >연습</a></td>
-						<td>10</td>
-						<td>1</td>
-						<td>hong@gmail.com</td>
-						<td>2023-01-01</td>
-					</tr>
-					<tr>
-						<td>10</td>
-						<td><a href="list?no-10" >연습</a></td>
-						<td>10</td>
-						<td>1</td>
-						<td>hong@gmail.com</td>
-						<td>2023-01-01</td>
-					</tr>
+					<c:choose>
+						<c:when test="${not empty result.boards }">
+							<c:forEach var="board" items="${result.boards }">
+								<tr>
+									<td>${board.no }</td>
+									<td><a href="detail?no=${board.no }" >${board.title }</a></td>
+									<td>${board.readCount }</td>
+									<td>${board.reviewCount }</td>
+									<td>${board.user.email }</td>
+									<td><fmt:formatDate value="${board.updateDate }" pattern="yyyy년 M월 d일"  /> </td>
+								</tr>	
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<tr >
+								<td colspan="6" class="text-center">게시글이 존재하지 않습니다.</td>
+							</tr>						
+						</c:otherwise>
+					</c:choose>
 				</tbody>
 			</table>
 			<div class="text-end">
@@ -80,29 +64,37 @@
 	</div>
 	<div class="row mb-3" >
 		<div class="col-12">
+		<c:if test="${result.pagination.totalRows gt 0 }">
+		<c:set var="currentPage" value="${result.pagination.page }" />
+						<c:set var="first" value="${result.pagination.first }" />
+						<c:set var="last" value="${result.pagination.last }"></c:set>
+						<c:set var="prePage" value="${result.pagination.prePage }"></c:set>
+						<c:set var="nextPage" value="${result.pagination.nextPage }"></c:set>
+						<c:set var="beginPage" value="${result.pagination.beginPage }"></c:set>
+						<c:set var="endPage" value="${result.pagination.endPage }"></c:set>
 			<nav>
 				<ul class="pagination justify-content-center">
-					<li class="page-item">
-						<a class="page-link"  href="list?page=1" >이전</a>
+					<li class="page-item ${first ? 'disabled' : '' }">
+						<a class="page-link"  href="list?page=${prePage }" >이전</a>
 					</li>
 					
-					<li class="page-item" >
-						<a class="page-link" href="list?page=1" >1</a>
+					<c:forEach var="num" begin="${beginPage }" end="${endPage }">					
+					<li class="page-item ${currentPage eq num ? 'active' : '' }" >
+						<a class="page-link" href="list?page=${num }" >${num }</a>
 					</li>
-					<li class="page-item" >
-						<a class="page-link" href="list?page=2" >2</a>
-					</li>
-					<li class="page-item" >
-						<a class="page-link" href="list?page=3" >3</a>
-					</li>
+					</c:forEach>
+
+
 					
-					<li class="page-item">
-						<a class="page-link" href="list?page=2" >다음</a>
+					<li class="page-item ${last ? 'disabled' : '' }">
+						<a class="page-link" href="list?page=${nextPage }"  >다음</a>
 					</li>
 				</ul>
 			</nav>
+		</c:if>
 		</div>
 	</div>
 </div>
+
 </body>
 </html>
